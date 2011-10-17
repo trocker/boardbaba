@@ -37,19 +37,16 @@ var mouseDown = 0;
 
 function mousingdown() { 
   ++mouseDown;
-start=0;
 }
 
 
 function mousingup() {
 --mouseDown;
-start=1;
-getFromServer();
 }
 
 function newCanvas(dataURL){
 //alert('now altering the new canvas.');
-var canvas = document.getElementById("canvas");
+var canvas = document.getElementById("myCanvas");
     var context = canvas.getContext("2d");
 
 
@@ -96,7 +93,7 @@ function getFromServer(){
 // make ajax call to getData.php and send that data to newCanvas()
 
 
-$.post('getData.php',function(data){$('#dataText').html(data);newCanvas(data);if(start){getFromServer();}});
+$.post('getData.php',function(data){$('#dataText').html(data);newCanvas(data);getFromServer();});
 
 
 
@@ -105,10 +102,10 @@ $.post('getData.php',function(data){$('#dataText').html(data);newCanvas(data);if
 
 
 var close=1;
-var start=1;
 
 
-$(document).ready(function(){$.post('getData.php',function(data){$('#dataText').html(data);newCanvas(data);});if(close){getFromServer();close=0;}});
+
+$(document).ready(function(){$.post('getData.php',function(data){$('#dataText').html(data);newCanvas(data);});});
 
 
  </script>
@@ -162,7 +159,7 @@ $(document).ready(function(){$.post('getData.php',function(data){$('#dataText').
 
 
 
-<body onmousemove="">
+<body onmousemove="if(close){getFromServer();close=0;}">
 
 
 <div id="wrapper">
@@ -186,7 +183,7 @@ $(document).ready(function(){$.post('getData.php',function(data){$('#dataText').
 				<div>fill</div>
 			</div>
 
-			<div class="control text" onclick="$.post('storeData.php','data='+'',function(data){});" id="clear">
+			<div class="control text" id="clear">
 				<div>clear</div>
 			</div>
 		</div>
@@ -208,7 +205,18 @@ $(document).ready(function(){$.post('getData.php',function(data){$('#dataText').
 
 
 
-			</div>
+		<canvas id="myCanvas" width="500" height="300">
+			<p>Your browser doesn't support canvas</p>
+		</canvas>
+
+<div style="clear:both;border:2px solid black;">
+<span onclick="getFromServer();" style="background-color:green;cursor:pointer;"> click here to replicate from database </span>
+</div>
+
+<img id="canvasimg" alt="image should be here"/>
+
+<textarea id="dataText" style="width:600px;height:300px;"></textarea>
+	</div>
 
 
 </body>
