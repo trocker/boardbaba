@@ -77,10 +77,11 @@ mysql_close($dbhandle);
 
 var shareId='<?echo $shareId;?>';
 var mouseDown = 0;
-
+var waitnow=0;
 function mousingdown() { 
   ++mouseDown;
 start=0;
+waitnow=1;
 }
 
 
@@ -88,18 +89,20 @@ function mousingup() {
 --mouseDown;
 start=1;
 getFromServer();
+waitnow=0;
 }
 
 function newCanvas(dataURL){
 //alert('now altering the new canvas.');
-var canvas = document.getElementById("newcanvas");
+var canvas = document.getElementById("canvas");
     var context = canvas.getContext("2d");
 
 
 var imageObj = new Image();
 imageObj.onload = function(){
-        context.drawImage(this, 0, 0);
-	mix();
+        
+if(waitnow){}
+else{context.drawImage(this, 0, 0);}
     };
  
     imageObj.src = dataURL;
@@ -150,101 +153,6 @@ $.post('getData.php','board='+shareId,function(data){$('#dataText').html(data);n
 
 var close=1;
 var start=1;
-
-
-
-
-//mixing two canvas
-//******************************************************
-
-
-
-function mix(){
-
-//tell me which color is first pixel of the new canvas.
-
-
- var canvas = document.getElementById("newcanvas");
-    var context = canvas.getContext("2d");
-
- var canvas_original = document.getElementById("canvas");
-    var context_original = canvas_original.getContext("2d");
-
- var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    var data = imageData.data;
-
-
- var imageData_original = context_original.getImageData(0, 0, canvas_original.width, canvas_original.height);
-    var data_original = imageData_original.data;
-
-
-//alert("New Canvas Len ::"+data.length+" && Original Canvas Len ::"+data_original.length);
-
- // to quickly iterate over all pixels, use a for loop like this
-    
-
-for (var icount = 0; icount < data.length; icount += 4) {
-        var red = data[icount]; // red
-        var green = data[icount + 1]; // green
-        var blue = data[icount + 2]; // blue
-        // i+3 is alpha (the fourth element)
-
-//check if the pixel is white [255,255,255].. if yes then skip or override the pixel in the original canvas
-
-if(red==255 && green==255 && blue==255){
-	//dont do anything
-				}
-
-else {
-
-	//change the corresponding pixel in the original canvas
-//set red
-data_original[icount]=data[icount];
-//set green
-data_original[icount+1]=data[icount+1];
-//set blue
-data_original[icount+2]=data[icount+2];
-
-	}
-
-
-
-    }
-
-
-//set imageData_original to modified data_original
-
-
-imageData_original.data= data_original;
-
-
-//putImageData in the original canvas.
-
-context_original.putImageData(imageData_original, 0, 0);
-
-
-
-//alert
-
-
-//alert("Done Mixing and thats all!");
- 
-
-
-
-
-
-
-
-
-
-
-
-}
-
-
-
-
 
 
 $(document).ready(function(){$.post('getData.php','board='+shareId,function(data){$('#dataText').html(data);newCanvas(data);});if(close){getFromServer();close=0;}});
@@ -334,13 +242,6 @@ $(document).ready(function(){$.post('getData.php','board='+shareId,function(data
 		</canvas>
 
 
-<canvas id="newcanvas" width="940" height="500" style="display:none;">
-			<p>Your browser doesn't support canvas. We recommend google chrome or firefox!</p>
-		</canvas>
-
-
-
-
 <div class="controls">
 
 
@@ -356,14 +257,12 @@ $(document).ready(function(){$.post('getData.php','board='+shareId,function(data
 				<div>marker</div>
 				<div>spray</div>
 				<div>fill</div>
-				<div onclick="mix();">Mix Canvas</div>
 			</div>
 
 			<div class="control text"  id="clear">
 				<div onclick="$.post('storeData.php','board='+shareId+'&data='+'',function(data){});">clear </div>
-			</div><span style="font-size:10px;">(double click)</span><br/>
-<span style="font-size:8px;">(ask other sharers to refresh -- press F5)</span>	<br/><br/>
-	</div>
+			</div><span style="font-size:10px;">(double click)</span>
+		</div>
 		
 
 
