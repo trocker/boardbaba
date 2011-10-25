@@ -1,25 +1,23 @@
-Canvas Drawing
-==============
+Real Time Canvas Sharing
+========================
 
 About
 -----
-This is a small engine for the canvas element aimed at making development of drawing
-applications a bit easier.
+This is a POC which you can deploy directly and start sharing your marker board. More info later! 
 
-Examples
---------
-* Basic, only default settings & no extra user controls.
-  http://balaclark.com/code/canvas/examples/basic.html
+Steps:
 
-* A (very) simple paint application.
-  http://balaclark.com/code/canvas/examples/paint.html
+1. Import MySql database from boardbaba.sql
+2. Deploy the files in a folder under your apache root directory.
 
-* A yet to be styled Etch A Sketch®
-  http://balaclark.com/code/canvas/examples/etchasketch.html
+
+Thats all!
+
+Forked from Balaclark , so yes, thankyou. :)
 
 License
 -------
-Copyright 2010 Bala Clark
+Copyright 2010 trocker!
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
